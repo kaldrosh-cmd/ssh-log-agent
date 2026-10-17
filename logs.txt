@@ -1,0 +1,5 @@
+Oct 11 08:34:01 server sshd[1201]: Failed password for kaldrosh from 192.168.1.50 port 51000 ssh2
+Oct 11 08:34:09 server sshd[1201]: Accepted password for kaldrosh from 192.168.1.50 port 51000 ssh2
+Oct 11 09:12:44 server sshd[1310]: Failed password for root from 10.0.0.7 port 40022 ssh2
+Oct 11 09:12:47 server sshd[1310]: Failed password for root from 10.0.0.7 port 40022 ssh2
+Oct 11 09:15:02 server sshd[1344]: Failed password for invalid user admin from 172.16.5.9 port 39911 ssh2
