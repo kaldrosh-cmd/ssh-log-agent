@@ -3,7 +3,9 @@ from log_tools import count_attempts
 
 def main():
     message = input("Put the message in here: ")
-    result = chat(model="qwen3:14b", messages=[{"role": "user", "content": message}], think=False, tools=[get_failed_attempts])
+    messages = [{"role": "user", "content": message}]
+    result = chat(model="qwen3:14b", messages=messages, think=False, tools=[get_failed_attempts])
+    messages.append(result.message)
     available_tools = {"get_failed_attempts": get_failed_attempts}
     for tool in result.message.tool_calls:
         print(tool.function.name)
@@ -11,6 +13,9 @@ def main():
         function_to_call = available_tools[tool.function.name]
         output = function_to_call(**tool.function.arguments)
         print(output)
+        messages.append({"role": "tool","content": str(output), "tool_name": tool.function.name})
+    final = chat(model="qwen3:14b", messages=messages, think=False, tools=[get_failed_attempts])
+    print(final.message.content)
 
 def get_failed_attempts(filename: str) -> dict:
     """This function returns failed attempts of logging in through a dictionary where filename is log file which conatins those failed attempts"""
