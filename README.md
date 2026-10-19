@@ -67,3 +67,4 @@ Tests cover all three tools, including an edge case: `10.0.0.7` must not count a
 - **System prompt:** with two similar tools, the model kept asking which one to use. A system prompt with clear rules made it pick a tool and answer directly.
 - **Round limit:** the agent stops after 5 rounds to prevent an infinite loop.
 - **`extract_ip` instead of `ip in line`:** a simple substring check counted attacks from `10.0.0.70` as attacks from `10.0.0.7`. Comparing the exact extracted IP fixes that (covered by a test).
+- **Errors as tool results:** if a file doesn't exist or the model asks for a tool that doesn't exist, the error is sent back to the model as the tool's result instead of crashing the program. The model can then explain the problem to the user (e.g. suggest checking the filename).

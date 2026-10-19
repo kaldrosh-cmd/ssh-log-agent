@@ -1,6 +1,6 @@
 from ollama import chat
 from log_tools import count_attempts, count_targeted_users, extract_ip
-SYSTEM_PROMPT = "You are a security assistant that analyzyes SSH log files. Always use the available tools to answer questions instead of asking the user for clarifications. If the user asks for the total number of failed login attempts, sum the results and give one number."
+SYSTEM_PROMPT = "You are a security assistant that analyzes SSH log files. Always use the available tools to answer questions instead of asking the user for clarifications. If the user asks for the total number of failed login attempts, sum the results and give one number."
 MAX_ROUNDS = 5
 
 def main():
@@ -17,8 +17,13 @@ def main():
             for tool in result.message.tool_calls:
                 print(tool.function.name)
                 print(tool.function.arguments)
-                function_to_call = available_tools[tool.function.name]
-                output = function_to_call(**tool.function.arguments)
+                try:
+                    function_to_call = available_tools[tool.function.name]
+                    output = function_to_call(**tool.function.arguments)
+                except FileNotFoundError:
+                    output = f"{tool.function.arguments.get('filename')} file does not exist"
+                except KeyError:
+                    output = f"Tool {tool.function.name} does not exist"
                 print(output)
                 messages.append({"role": "tool","content": str(output), "tool_name": tool.function.name})
         else:
@@ -72,8 +77,6 @@ def get_users_for_ip(filename: str, ip: str) -> dict:
                 ip_lines.append(line)
     return count_targeted_users(ip_lines)
                 
-
-
 
 if __name__ == "__main__":
     main()
