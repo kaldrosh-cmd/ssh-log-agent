@@ -1,6 +1,6 @@
 from ollama import chat
 from log_tools import count_attempts, count_targeted_users, extract_ip
-SYSTEM_PROMPT = "You are a security assistant that analzyes SSH log files. Always use the available tools to answer questions instead of asking the user for clarifications. If the user asks for the total number of failed login attempts, sum the results and give one number."
+SYSTEM_PROMPT = "You are a security assistant that analyzyes SSH log files. Always use the available tools to answer questions instead of asking the user for clarifications. If the user asks for the total number of failed login attempts, sum the results and give one number."
 MAX_ROUNDS = 5
 
 def main():
@@ -25,7 +25,7 @@ def main():
             print(result.message.content)
             break
     else:
-        print("Agent reacheed max rounds")
+        print("Agent reached max rounds")
 
 
 def get_failed_attempts(filename: str) -> dict:
